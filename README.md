@@ -4,56 +4,218 @@
 
 ![StudyBuddy AI Header](client/public/logo.jpg)
 
-**StudyBuddy AI** is a lightweight, full-stack web application that transforms long, dense study notes into concise summaries, key takeaways, and 5 interactive practice exam questions with answers. Powered strictly by **Open-Source / Open-Weight AI models** (Qwen 2.5 72B, Llama 3.3 70B, Mistral 7B).
+**StudyBuddy AI** is a lightweight, full-stack web application that transforms long, dense study notes into concise summaries, key takeaways, and practice exam questions with answers.
+
+It uses **open-weight AI models available through Hugging Face Inference Providers**, with **Qwen/Qwen2.5-72B-Instruct** as the default model.
 
 ---
 
-## 🎯 Who It Was Built For & The Problem It Solves
+## 🎯 The Problem
 
-### The Backstory
-This project was built for a university student and friend who gets overwhelmed when preparing for exams from long 20-to-30-page study notes and textbook chapters.
+Students often have to prepare for exams using long textbook chapters, lecture notes, and study material.
 
-### The Problem
-* **Information Overload:** Students re-reading raw textbook notes spend hours without actively retaining key principles.
-* **Passive Studying vs Active Recall:** Studying is most effective when testing yourself, but manually creating quiz questions takes too much time right before an exam.
+This creates two common problems:
 
-### The Solution
-StudyBuddy AI gives any student an instant **Study Pack** in under 5 seconds:
-1. **Concise Overview:** A 2–4 sentence summary + bulleted core takeaways.
-2. **5 Practice Exam Questions:** Targeted questions designed to test comprehension.
-3. **Instant Self-Grading & Flashcards:** Revealable answers with explanations and an interactive flashcard mode to test active recall before exam day.
+- **Information Overload:** Students can spend a lot of time reading large amounts of material without identifying the most important concepts.
+- **Passive Studying:** Creating practice questions manually takes additional time, even though active recall is useful for revision.
+
+## 💡 The Solution
+
+StudyBuddy AI converts raw study notes into a structured **Study Pack** containing:
+
+1. **Concise Overview** — A short summary of the submitted notes.
+2. **Key Takeaways** — Important concepts extracted from the material.
+3. **5 Practice Questions** — Questions generated specifically from the submitted notes.
+4. **Answers & Explanations** — Revealable answers that help students check their understanding.
+
+The project was built around a simple idea:
+
+> **Turn overwhelming study material into a structured and interactive study experience.**
+
+---
+
+## 🤝 Built for a Friend
+
+This project was created for a friend who gets overwhelmed when preparing for exams from long study notes and textbook chapters.
+
+Instead of manually creating summaries and practice questions, the student can paste their notes into StudyBuddy AI and receive a ready-to-use study pack.
 
 ---
 
 ## 🤖 How the AI Works
 
-1. **Input & Extraction:** The student pastes raw study notes into the application.
-2. **Open-Weight Model Processing:** The Express backend formats a structured system prompt requiring strictly typed JSON output and sends it to an open-weight foundation model:
-   * **Qwen 2.5 72B Instruct** (via Hugging Face Serverless / OpenRouter)
-   * **Llama 3.3 70B Instruct** (via Groq / Hugging Face / OpenRouter)
-   * **Mistral 7B Instruct v0.3** (via Hugging Face)
-   * **Local Ollama** (`llama3` / `qwen2.5` running locally on `http://localhost:11434`)
-3. **Structured JSON Parsing & Backstop:** The server validates and parses the JSON schema (`summary`, `keyTakeaways`, `qaPairs`). If API keys are absent, a smart heuristic extractor seamlessly generates a formatted study pack so the application is 100% runnable out-of-the-box.
+The application follows a simple full-stack AI workflow:
+
+```text
+Student Notes
+     ↓
+React Frontend
+     ↓
+Express.js Backend
+     ↓
+Hugging Face Router
+     ↓
+Open-Weight AI Model
+     ↓
+Structured Study Pack
+     ↓
+React UI
+
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- **React 18** — Component-based user interface
+- **Vite** — Fast frontend development and build tool
+- **CSS3** — Custom responsive styling
+- **Lucide React** — UI icons
+- **Canvas Confetti** — Visual feedback after completing study activities
+
+### Backend
+
+- **Node.js** — JavaScript runtime
+- **Express.js** — Backend API server
+- **CORS** — Cross-origin request handling
+- **Dotenv** — Environment variable management
+
+### AI Integration
+
+- **Hugging Face Router** — AI model inference
+- **Hugging Face Inference Providers** — Access to compatible open-weight models
+- **Qwen/Qwen2.5-72B-Instruct** — Default AI model
+
+### Development Tools
+
+- **Git & GitHub** — Version control and project hosting
+- **npm** — Dependency management
+- **Vite** — Frontend development and production builds
 
 ---
 
-## 💡 Why Using Open-Source / Open-Weight AI is Useful
+## 🧠 AI Architecture
 
-* **Data Privacy & Sovereignty:** Student study notes and university materials are not used to train proprietary closed-source models.
-* **Local Offline Execution:** Open-weight models like Llama 3 and Qwen 2.5 can be downloaded and run 100% offline via Ollama without relying on external corporate APIs.
-* **Transparency & Reproducibility:** Model architecture, training data disclosures, and weight files are publicly accessible and auditable by the global developer community.
-* **Cost Efficiency:** Reduces expensive per-token costs by utilizing serverless inference tiers or self-hosted infrastructure.
+StudyBuddy AI follows a simple full-stack AI architecture:
 
----
+```text
+┌─────────────────────┐
+│    Student Notes    │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│   React Frontend    │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│   Express Backend   │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Hugging Face       │
+│      Router         │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│ Open-Weight AI      │
+│      Model          │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│   Structured Study  │
+│        Pack         │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│    React UI         │
+└─────────────────────┘
 
-## 🛠️ Technologies Used
+AI Workflow :
 
-* **Frontend:** React 18, Vite, Vanilla CSS3 (Custom Glassmorphic Dark Design System), Lucide Icons, Canvas Confetti
-* **Backend:** Node.js, Express.js, Cors, Dotenv
-* **AI Integration:** Hugging Face Inference API, Groq API, OpenRouter API, Ollama Local API
-* **Models:** Qwen/Qwen2.5-72B-Instruct, meta-llama/Llama-3.3-70B-Instruct, mistralai/Mistral-7B-Instruct-v0.3
+The student enters or pastes their study notes.
+React sends the notes to the Express.js backend.
+The backend creates a structured prompt.
+The prompt is sent to the Hugging Face Router.
+The selected open-weight model processes the notes.
+The backend receives the generated response.
+The response is structured into a study pack.
+The React frontend displays the generated content.
 
----
+The generated study pack contains :
+
+Summary
+Key Takeaways
+5 Practice Questions
+Answers
+Explanations
+
+
+
+🤖 Model Selection
+
+The default model is:
+
+Qwen/Qwen2.5-72B-Instruct
+
+StudyBuddy AI also includes a dynamic model selector.
+
+Instead of allowing users to enter arbitrary model IDs, the application retrieves currently available models from the Hugging Face Router and displays compatible models that have live inference providers.
+
+This helps prevent users from selecting models that are unavailable through the configured inference service.
+
+
+
+
+💡 Why Open-Weight AI?
+
+StudyBuddy AI uses open-weight AI models through inference providers.
+
+This approach provides:
+
+Flexibility — Different compatible models can be used.
+Experimentation — Developers can experiment with different open-weight models.
+Deployment Options — Compatible models can potentially be deployed locally.
+Provider Flexibility — Models can be accessed through inference infrastructure instead of requiring local hardware.
+Developer Control — Open-weight models provide more control over model and deployment choices.
+
+
+
+🎯 Features
+📚 Study Pack Generation
+
+Convert raw study notes into a structured study pack.
+
+📝 AI Summaries
+
+Generate concise summaries from lengthy notes.
+
+🔑 Key Takeaways
+
+Extract the most important concepts from the submitted material.
+
+❓ Practice Questions
+
+Generate five practice questions based on the student's notes.
+
+💡 Answers & Explanations
+
+Reveal answers and explanations to support self-testing and revision.
+
+🤖 Dynamic AI Model Selection
+
+Discover compatible models currently available through Hugging Face's inference providers.
+
+🎨 Clean Study Interface
+
+A simple interface designed specifically for quickly entering notes and reviewing generated study material.
+
+
+
 
 ## 🚀 Quick Start Guide (How to Install & Run Locally)
 
